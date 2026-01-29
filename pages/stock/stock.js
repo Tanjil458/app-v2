@@ -498,16 +498,3 @@ const StockModule = (function() {
 
 // Export to global scope
 window.StockModule = StockModule;
-
-// Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.Router && window.Router.getCurrentRoute() === '/stock') {
-            StockModule.init();
-        }
-    });
-} else {
-    if (window.Router && window.Router.getCurrentRoute() === '/stock') {
-        StockModule.init();
-    }
-}

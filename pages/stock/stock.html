@@ -107,3 +107,9 @@
 
 <!-- Load Stock Module JavaScript -->
 <script src="pages/stock/stock.js"></script>
+<script>
+    // Initialize stock module when page loads
+    if (typeof StockModule !== 'undefined') {
+        StockModule.init();
+    }
+</script>
