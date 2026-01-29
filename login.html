@@ -221,7 +221,7 @@
 
             try {
                 // Initialize database if needed
-                await DatabaseManager.getDatabase();
+                await DB.getDB();
 
                 // Attempt login
                 const result = await AuthManager.login(employeeId, password);

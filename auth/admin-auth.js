@@ -102,7 +102,7 @@ const AuthManager = {
             }
 
             // Get employee from database
-            const db = await DatabaseManager.getDatabase();
+            const db = await DB.getDB();
             const transaction = db.transaction(['employees'], 'readonly');
             const store = transaction.objectStore('employees');
             
@@ -250,7 +250,7 @@ const AuthManager = {
             const { hash, salt } = await this.hashPassword(newPassword);
 
             // Update employee in database
-            const db = await DatabaseManager.getDatabase();
+            const db = await DB.getDB();
             const transaction = db.transaction(['employees'], 'readwrite');
             const store = transaction.objectStore('employees');
             
