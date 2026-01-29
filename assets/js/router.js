@@ -49,6 +49,18 @@
             const html = await response.text();
             contentArea.innerHTML = html;
 
+            // Execute scripts in the loaded HTML
+            const scripts = contentArea.querySelectorAll('script');
+            scripts.forEach(script => {
+                const newScript = document.createElement('script');
+                if (script.src) {
+                    newScript.src = script.src;
+                } else {
+                    newScript.textContent = script.textContent;
+                }
+                script.parentNode.replaceChild(newScript, script);
+            });
+
             // Update active navigation
             updateActiveNav(path);
 
