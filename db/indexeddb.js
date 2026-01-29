@@ -7,7 +7,7 @@
     'use strict';
 
     const DB_NAME = 'MimiProDB';
-    const DB_VERSION = 1;
+    const DB_VERSION = 2;
     let db = null;
 
     /**
@@ -76,6 +76,23 @@
             autoIncrement: true,
             indexes: [
                 { name: 'date', keyPath: 'date', unique: false }
+            ]
+        },
+        stock: {
+            keyPath: 'id',
+            autoIncrement: true,
+            indexes: [
+                { name: 'productId', keyPath: 'productId', unique: true },
+                { name: 'productName', keyPath: 'productName', unique: false }
+            ]
+        },
+        syncStatus: {
+            keyPath: 'id',
+            autoIncrement: true,
+            indexes: [
+                { name: 'storeName', keyPath: 'storeName', unique: false },
+                { name: 'recordId', keyPath: 'recordId', unique: false },
+                { name: 'status', keyPath: 'status', unique: false }
             ]
         }
     };

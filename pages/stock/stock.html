@@ -1,0 +1,115 @@
+<!-- Stock Management Page -->
+<div class="page-header">
+    <h1 class="page-title">Stock Management</h1>
+    <p class="page-subtitle">Track and manage distributor stock</p>
+</div>
+
+<!-- Stock Overview Section -->
+<div class="card">
+    <div class="card-header">
+        <h3>Current Stock Levels</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="stockTable" class="delivery-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Current Stock (pcs)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                    <!-- Stock rows will be added dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+    <div class="card-header">
+        <h3>Stock Actions</h3>
+    </div>
+    <div class="card-body">
+        <button class="btn btn-primary btn-block" id="addStockBtn">
+            <span class="btn-icon">+</span> Add Stock (Restock)
+        </button>
+        <button class="btn btn-secondary btn-block" id="viewHistoryBtn" style="margin-top: 12px;">
+            <span class="btn-icon">📋</span> View Stock History
+        </button>
+    </div>
+</div>
+
+<!-- Add Stock Modal -->
+<div id="addStockModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Stock</h3>
+            <button class="modal-close" id="closeAddStockModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Product</label>
+                <select id="stockProductSelect" class="form-input">
+                    <option value="">Select Product</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quantity (pieces)</label>
+                <input type="number" id="stockQuantity" class="form-input" placeholder="Enter quantity" min="0">
+            </div>
+            <div class="form-group">
+                <label>Notes (optional)</label>
+                <input type="text" id="stockNotes" class="form-input" placeholder="Enter notes">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelAddStock">Cancel</button>
+            <button class="btn btn-primary" id="confirmAddStock">Add Stock</button>
+        </div>
+    </div>
+</div>
+
+<!-- Adjust Stock Modal -->
+<div id="adjustStockModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Adjust Stock</h3>
+            <button class="modal-close" id="closeAdjustStockModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Product</label>
+                <input type="text" id="adjustProductName" class="form-input" readonly>
+            </div>
+            <div class="form-group">
+                <label>Current Stock</label>
+                <input type="text" id="adjustCurrentStock" class="form-input" readonly>
+            </div>
+            <div class="form-group">
+                <label>New Quantity (pieces)</label>
+                <input type="number" id="adjustNewQuantity" class="form-input" placeholder="Enter new quantity" min="0">
+            </div>
+            <div class="form-group">
+                <label>Reason</label>
+                <input type="text" id="adjustReason" class="form-input" placeholder="Enter reason for adjustment">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelAdjustStock">Cancel</button>
+            <button class="btn btn-primary" id="confirmAdjustStock">Update Stock</button>
+        </div>
+    </div>
+</div>
+
+<!-- Load Stock Module JavaScript -->
+<script src="pages/stock/stock.js"></script>
+<script>
+    // Initialize stock module when page loads
+    if (typeof StockModule !== 'undefined') {
+        StockModule.init();
+    }
+</script>
