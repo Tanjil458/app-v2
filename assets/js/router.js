@@ -48,6 +48,9 @@
             const html = await response.text();
             contentArea.innerHTML = html;
 
+            // Execute any script tags in the loaded HTML
+            executeScripts(contentArea);
+
             // Update active navigation
             updateActiveNav(path);
 
@@ -65,6 +68,53 @@
                 </div>
             `;
         }
+    }
+
+    /**
+     * Execute script tags in loaded HTML
+     */
+    function executeScripts(container) {
+        const scripts = container.querySelectorAll('script');
+        scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+
+            // Copy attributes
+            Array.from(oldScript.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
+            });
+
+            // Copy inline script content or handle external scripts
+            if (oldScript.src) {
+                // For external scripts, we need to handle the load event
+                newScript.onload = () => {
+                    // Find and execute any inline scripts that depend on this
+                    executeInlineScripts(container);
+                };
+            } else {
+                // For inline scripts, copy the content
+                newScript.textContent = oldScript.textContent;
+            }
+
+            // Replace old script with new one to execute it
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+
+        // Execute inline scripts after a short delay to ensure external scripts loaded
+        setTimeout(() => executeInlineScripts(container), 100);
+    }
+
+    /**
+     * Execute only inline scripts
+     */
+    function executeInlineScripts(container) {
+        const scripts = container.querySelectorAll('script:not([src])');
+        scripts.forEach(script => {
+            try {
+                eval(script.textContent);
+            } catch (error) {
+                console.error('Error executing inline script:', error);
+            }
+        });
     }
 
     /**
