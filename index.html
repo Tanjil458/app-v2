@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="MimiPro - Distributor Delivery & Business Manager">
+    <title>MimiPro Admin</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-logo">
+            <span class="logo-mimi">Mimi</span><span class="logo-pro">Pro</span>
+        </div>
+        <div class="header-actions">
+            <span class="local-badge">LOCAL MODE</span>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="content" class="main-content">
+        <!-- Page content will be loaded here dynamically -->
+        <div class="loading">Loading...</div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-route="/dashboard">
+            <div class="nav-icon">📊</div>
+            <div class="nav-label">Dashboard</div>
+        </div>
+        <div class="nav-item" data-route="/delivery">
+            <div class="nav-icon">📦</div>
+            <div class="nav-label">Delivery</div>
+        </div>
+        <div class="nav-item" data-route="/attendance">
+            <div class="nav-icon">✓</div>
+            <div class="nav-label">Attendance</div>
+        </div>
+        <div class="nav-item" data-route="/reports">
+            <div class="nav-icon">📋</div>
+            <div class="nav-label">Reports</div>
+        </div>
+    </nav>
+
+    <!-- Core JavaScript Files (order matters) -->
+    <script src="db/indexeddb.js"></script>
+    <script src="assets/js/constants.js"></script>
+    <script src="assets/js/router.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

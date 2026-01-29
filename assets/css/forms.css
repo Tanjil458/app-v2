@@ -1,0 +1,338 @@
+/* ==================== FORM STYLES ==================== */
+
+/* Form Group */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-group label.required::after {
+    content: ' *';
+    color: #dc3545;
+}
+
+/* Form Control */
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.form-control:focus {
+    border-color: #5B5FED;
+    box-shadow: 0 0 0 3px rgba(91, 95, 237, 0.1);
+}
+
+.form-control:disabled {
+    background: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* Form Control Sizes */
+.form-control-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.form-control-lg {
+    padding: 14px 16px;
+    font-size: 16px;
+}
+
+/* Select */
+select.form-control {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23495057' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 32px;
+}
+
+/* Textarea */
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Checkbox & Radio */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.form-check input[type="checkbox"],
+.form-check input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.form-check label {
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.input-group .form-control {
+    flex: 1;
+}
+
+.input-group-prepend,
+.input-group-append {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* Form Validation */
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.form-control.is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.form-control.is-valid {
+    border-color: #28a745;
+}
+
+.form-control.is-valid:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.invalid-feedback {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc3545;
+}
+
+.valid-feedback {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #28a745;
+}
+
+/* Form Help Text */
+.form-text {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Form Row */
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    text-decoration: none;
+}
+
+.btn:disabled {
+    cursor: not-stopped;
+    opacity: 0.6;
+}
+
+/* Button Variants */
+.btn-primary {
+    background: #5B5FED;
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #4a4ed8;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #5a6268;
+}
+
+.btn-success {
+    background: #28a745;
+    color: #fff;
+}
+
+.btn-success:hover:not(:disabled) {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #c82333;
+}
+
+.btn-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover:not(:disabled) {
+    background: #e0a800;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: #fff;
+}
+
+.btn-info:hover:not(:disabled) {
+    background: #138496;
+}
+
+.btn-light {
+    background: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+}
+
+.btn-light:hover:not(:disabled) {
+    background: #e2e6ea;
+}
+
+.btn-dark {
+    background: #343a40;
+    color: #fff;
+}
+
+.btn-dark:hover:not(:disabled) {
+    background: #23272b;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* Button Block */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* Button Icon */
+.btn-icon {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Button Group */
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-group .btn {
+    flex: 1;
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    width: 56px;
+    height: 56px;
+    background: #5B5FED;
+    border-radius: 50%;
+    border: none;
+    color: #fff;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(91, 95, 237, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s;
+}
+
+.fab:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(91, 95, 237, 0.5);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-row .form-group {
+        margin-bottom: 16px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+}

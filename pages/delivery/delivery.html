@@ -1,0 +1,176 @@
+<!-- Delivery Calculation Page -->
+<div class="page-header">
+    <h1 class="page-title">Delivery Calculation</h1>
+    <p class="page-subtitle">Manage daily delivery calculations</p>
+</div>
+
+<!-- Inventory Calculation Section -->
+<div class="card">
+    <div class="card-header">
+        <h3>Delivery Calculation</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="invTable" class="delivery-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 80px;">Product</th>
+                        <th class="col-green" style="width: 40px;" title="Delivery Carton">DC</th>
+                        <th class="col-green" style="width: 40px;" title="Delivery Pieces">DP</th>
+                        <th class="col-red" style="width: 40px;" title="Return Carton">RC</th>
+                        <th class="col-red" style="width: 40px;" title="Return Pieces">RP</th>
+                        <th style="width: 50px;">Sold</th>
+                        <th style="width: 60px;">Price</th>
+                        <th style="width: 70px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn btn-primary btn-block" id="addProductRow" style="margin-top: 12px;">
+            <span class="btn-icon">+</span> Add Product
+        </button>
+        <div class="summary-inline">
+            <span class="summary-label">Sales Total:</span>
+            <span class="summary-value">৳ <span id="sales">0</span></span>
+        </div>
+    </div>
+</div>
+
+<!-- Cash Denominations Section -->
+<div class="card">
+    <div class="card-header">
+        <h3>Cash Denominations</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="cashTable" class="delivery-table">
+                <thead>
+                    <tr>
+                        <th>Note</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="summary-inline">
+            <span class="summary-label">Cash Total:</span>
+            <span class="summary-value">৳ <span id="cash">0</span></span>
+        </div>
+    </div>
+</div>
+
+<!-- Extra Expenses Section -->
+<div class="card">
+    <div class="card-header">
+        <h3>Extra Expenses</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="expenseTable" class="delivery-table">
+                <thead>
+                    <tr>
+                        <th>Expense Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn btn-primary btn-block" id="addExpenseBtn" style="margin-top: 12px;">
+            <span class="btn-icon">+</span> Add Expense
+        </button>
+        <div class="summary-inline">
+            <span class="summary-label">Total Expenses:</span>
+            <span class="summary-value">৳ <span id="totalExpense">0</span></span>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Section -->
+<div class="card">
+    <div class="card-header">
+        <h3>Summary</h3>
+    </div>
+    <div class="card-body">
+        <div class="summary-box">
+            <div class="summary-row">
+                <span>Sales Total:</span>
+                <span>৳ <span id="summaryS">0</span></span>
+            </div>
+            <div class="summary-row">
+                <span>Cash Total:</span>
+                <span>৳ <span id="summaryC">0</span></span>
+            </div>
+            <div class="summary-row">
+                <span>Total Expenses:</span>
+                <span>৳ <span id="summaryE">0</span></span>
+            </div>
+            <div class="summary-row summary-row-total">
+                <span>Net Total:</span>
+                <span>৳ <span id="net">0</span></span>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-block btn-lg" id="saveCalculationBtn" style="margin-top: 16px;">
+            Save Calculation
+        </button>
+    </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="modal" id="expenseModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Expense</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Expense Name</label>
+                <input id="expenseName" type="text" class="form-control" placeholder="Enter expense name">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input id="expenseAmount" type="number" class="form-control" placeholder="0">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelExpenseBtn">Cancel</button>
+            <button class="btn btn-primary" id="saveExpenseBtn">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Prompt Modal -->
+<div class="custom-prompt-overlay" id="customPrompt">
+    <div class="custom-prompt-box">
+        <h3 id="promptTitle">Customer Name</h3>
+        <input type="text" class="custom-prompt-input" id="promptInput" placeholder="Enter customer name">
+        <div class="custom-prompt-actions">
+            <button class="btn btn-secondary" id="cancelPromptBtn">Cancel</button>
+            <button class="btn btn-primary" id="submitPromptBtn">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Popup -->
+<div class="delete-confirm-overlay" id="deleteConfirmPopup">
+    <div class="delete-confirm-box" role="dialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteText">
+        <div class="delete-confirm-icon">⚠️</div>
+        <div class="delete-confirm-title" id="deleteTitle">Delete this item?</div>
+        <div class="delete-confirm-text" id="deleteText">This action cannot be undone. Are you sure you want to delete this item?</div>
+        <div class="delete-confirm-actions">
+            <button class="delete-confirm-btn cancel" id="cancelDeleteBtn">Cancel</button>
+            <button class="delete-confirm-btn delete" id="confirmDeleteBtn">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script src="delivery.js"></script>
+<script>
+    // Initialize delivery module when page loads
+    if (typeof DeliveryModule !== 'undefined') {
+        DeliveryModule.init();
+    }
+</script>

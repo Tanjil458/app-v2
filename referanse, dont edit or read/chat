@@ -1,0 +1,511 @@
+Below is a comprehensive Product Requirements Document (PRD) for your app, written in a professional, implementation-ready manner.
+
+It fully combines:
+
+Everything already present in your current HTML/JS Android WebView app (from the provided Gist)
+
+All new features you requested
+
+All decisions made in this conversation (including Option B for employee login)
+
+Page-by-page breakdown
+
+Detailed logic, calculations, data structures, and UI requirements
+
+This PRD is designed so you can:
+
+Build step-by-step without confusion
+
+Scale later (sync, backup, multi-device)
+
+Hand it to another developer if needed
+
+PRODUCT REQUIREMENTS DOCUMENT (PRD)
+
+App Name: MimiPro – Distributor Delivery & Business Manager
+
+1. PURPOSE & VISION
+
+1.1 Purpose
+
+MimiPro is an offline-first Android business management app designed for distributors in Bangladesh to manage:
+
+Daily delivery calculations
+
+Product stock movement
+
+Employee attendance & salary
+
+Deliveryman & helper assignment
+
+Business credit tracking
+
+Monthly history & reporting
+
+The app runs as an HTML/JS app inside Android WebView, storing data locally (IndexedDB) with future cloud sync support.
+
+1.2 Target Users
+
+Small & medium distributors
+
+Owners who manage deliverymen and helpers
+
+Businesses operating without permanent internet
+
+2. TECH STACK (CURRENT & FUTURE)
+
+2.1 Current Stack
+
+Frontend: HTML, CSS, Vanilla JavaScript
+
+Storage: IndexedDB (local)
+
+Android: WebView (Java + XML wrapper)
+
+Offline-first by default
+
+2.2 Future (Optional)
+
+Firebase Realtime Database (sync only)
+
+Manual or automatic backup
+
+Multi-device access for owner only
+
+3. CORE ENTITIES & DATA MODELS
+
+3.1 Product
+
+Copy code
+
+Product {
+
+  id
+
+  name
+
+  unitPrice
+
+}
+
+3.2 Delivery Record
+
+Copy code
+
+Delivery {
+
+  id
+
+  date
+
+  deliverymanId
+
+  helperIds[]
+
+  items[] {
+
+    productId
+
+    sentQty
+
+    returnedQty
+
+    soldQty (auto calculated)
+
+    price
+
+    total
+
+  }
+
+  grandTotal
+
+}
+
+Calculation Logic
+
+Copy code
+
+soldQty = sentQty - returnedQty
+
+itemTotal = soldQty × price
+
+grandTotal = sum(itemTotal)
+
+3.3 Employee (Deliveryman / Helper)
+
+Copy code
+
+Employee {
+
+  id
+
+  name
+
+  role (deliveryman | helper)
+
+  phone
+
+  passwordHash
+
+  salaryType (daily | monthly)
+
+  salaryRate
+
+  isActive
+
+}
+
+3.4 Attendance
+
+Copy code
+
+Attendance {
+
+  employeeId
+
+  date
+
+  status (present | absent)
+
+}
+
+3.5 Salary Advance
+
+Copy code
+
+SalaryAdvance {
+
+  employeeId
+
+  date
+
+  amount
+
+  note
+
+}
+
+3.6 Business Credit
+
+Copy code
+
+BusinessCredit {
+
+  id
+
+  name
+
+  date
+
+  totalAmount
+
+  paidAmount
+
+  remainingAmount
+
+}
+
+4. AUTHENTICATION MODEL (EMPLOYEE SECURITY)
+
+Selected Option: B – Employee ID + Password
+
+Rules:
+
+Each employee has:
+
+Unique Employee ID
+
+Password
+
+Employees can:
+
+Log in only to their own ID
+
+View only their attendance & salary
+
+Owner/Admin:
+
+No login restriction
+
+Can access all data
+
+Security Logic
+
+Password stored as hashed value
+
+No employee can view another employee’s data
+
+Owner bypasses login
+
+5. PAGE-BY-PAGE REQUIREMENTS
+
+PAGE 1: HOME / DASHBOARD
+
+UI Components
+
+Header (App name)
+
+Grid / Cards:
+
+Delivery
+
+Attendance
+
+Employees
+
+Business Credit
+
+Products
+
+History
+
+Functional Logic
+
+Entry point for all modules
+
+Shows today’s date
+
+PAGE 2: DELIVERY CALCULATION PAGE
+
+UI
+
+Date selector (default today)
+
+Deliveryman selector (dropdown)
+
+Helper selector (multi-select)
+
+Product list table:
+
+Product name
+
+Sent
+
+Returned
+
+Sold (auto)
+
+Price
+
+Total (auto)
+
+Grand total display
+
+Save button
+
+Logic
+
+Sold auto-calculated
+
+Cannot save without selecting deliveryman
+
+Data stored locally
+
+PAGE 3: EMPLOYEE MANAGEMENT
+
+UI
+
+Employee list
+
+Add button (bottom-right)
+
+Employee detail view
+
+Add Employee Fields
+
+Name
+
+Role (deliveryman/helper)
+
+Phone
+
+Salary type
+
+Salary rate
+
+Password
+
+PAGE 4: ATTENDANCE PAGE
+
+UI
+
+Date selector
+
+Employee list with Present/Absent toggle
+
+Save attendance
+
+Logic
+
+One attendance record per employee per day
+
+Used later in salary calculation
+
+PAGE 5: SALARY & ADVANCE PAGE
+
+UI
+
+Month selector
+
+Employee selector
+
+Attendance summary
+
+Salary calculation
+
+Advance deduction list
+
+Final payable amount
+
+Salary Logic
+
+Daily Salary
+
+Copy code
+
+salary = presentDays × dailyRate
+
+Monthly Salary
+
+Copy code
+
+salary = monthlyRate (if any presence)
+
+Final Pay
+
+Copy code
+
+finalPay = salary - sum(advances)
+
+PAGE 6: BUSINESS CREDIT PAGE
+
+UI
+
+Month selector
+
+Credit list (box style)
+
+Each credit shows:
+
+Name
+
+Date
+
+Total
+
+Paid
+
+Remaining
+
+Add Credit button
+
+Add Payment option per credit
+
+Logic
+
+Copy code
+
+remaining = totalAmount - paidAmount
+
+PAGE 7: PRODUCT MANAGEMENT
+
+UI
+
+Product list
+
+Add/Edit/Delete
+
+Price update support
+
+PAGE 8: HISTORY PAGE (MONTHLY)
+
+UI
+
+Single page scroll
+
+Sections per month:
+
+Delivery list
+
+Monthly total sales
+
+Credit summary
+
+Logic
+
+Data grouped by month
+
+No filtering required by default
+
+6. DATA STORAGE & PERSISTENCE
+
+Storage Rules
+
+All data saved in IndexedDB
+
+No data loss on reload
+
+Each module has its own store
+
+Backup (Future)
+
+Manual export
+
+Firebase sync (owner only)
+
+7. UI / UX GUIDELINES
+
+Clean, flat UI
+
+Large touch targets
+
+No clutter
+
+Offline friendly
+
+Bangla-friendly text support
+
+8. NON-FUNCTIONAL REQUIREMENTS
+
+Works without internet
+
+Fast load (<1s)
+
+No crashes on navigation
+
+Handles years of data
+
+9. FUTURE EXTENSIONS (NOT REQUIRED NOW)
+
+Cloud sync
+
+Invoice printing
+
+Customer app
+
+Role-based admin
+
+10. FINAL NOTE
+
+This PRD is:
+
+Implementation-ready
+
+Scalable
+
+Aligned with Bangladeshi distributor workflows
+
+Fully consistent with your current app and future plans
+
+If you want, next we can:
+
+Convert this PRD into database schema code
+
+Create exact IndexedDB structure
+
+Design wireframe UI
+
+Write step-by-step development roadmap
+
+Just tell me which one to do next.

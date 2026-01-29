@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+
+
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Warning Popup (custom confirm replacement) */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            animation: confirmFade 0.2s ease;
+        }
+        .confirm-overlay.show { display: flex; }
+
+        .confirm-box {
+            width: 92%;
+            max-width: 360px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 22px 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            text-align: center;
+            animation: confirmPop 0.22s ease-out;
+        }
+
+        .confirm-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(91,95,237,0.12);
+            color: #5B5FED;
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .confirm-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111;
+            margin: 6px 0 8px;
+        }
+
+        .confirm-text {
+            font-size: 13px;
+            color: #5f6b7a;
+            line-height: 1.4;
+            margin-bottom: 18px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .confirm-btn.cancel {
+            background: #f1f3f5;
+            color: #343a40;
+            border: 1px solid #e9ecef;
+        }
+
+        .confirm-btn.delete {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .confirm-btn.delete:hover { background: #c92a3b; }
+
+        @keyframes confirmFade {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        @keyframes confirmPop {
+            from { transform: translateY(8px) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Delete Confirmation Popup (Modern Design) */
+        .delete-confirm-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.75);
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+        .delete-confirm-overlay.show { display: flex; }
+
+        .delete-confirm-box {
+            width: 90%;
+            max-width: 400px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 18px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: popIn 0.22s ease-out;
+        }
+
+        .delete-confirm-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #dc3545;
+        }
+
+        .delete-confirm-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111;
+            margin: 8px 0;
+        }
+
+        .delete-confirm-text {
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .delete-confirm-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .delete-confirm-btn {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .delete-confirm-btn.cancel {
+            background: #f8f9fa;
+            color: #343a40;
+            border: 1px solid #dee2e6;
+        }
+
+        .delete-confirm-btn.delete {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .delete-confirm-btn.delete:hover { background: #c82333; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: translateY(10px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Header -->
+<!-- Header -->
+<div class="header">
+    <div class="header-logo">
+        <span class="logo-mimi">Mimi</span><span class="logo-pro">Pro</span>
+    </div>
+    <span class="local-badge">LOCAL MODE</span>
+</div>
+
+<!-- Inventory Calculation Page -->
+<div id="inventory" class="page active">
+    <div class="card">
+        <h3>Delivery Calculation</h3>
+        <div style="overflow-x: auto;">
+            <table id="invTable">
+                <thead>
+                <tr>
+                    <th style="min-width: 80px;">Product</th>
+                    <th class="col-green" style="width: 40px;">DC</th>
+                    <th class="col-green" style="width: 40px;">DP</th>
+                    <th class="col-red" style="width: 40px;">RC</th>
+                    <th class="col-red" style="width: 40px;">RP</th>
+                    <th style="width: 50px;">Sold</th>
+                    <th style="width: 60px;">Price</th>
+                    <th style="width: 70px;">Total</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <button class="btn btn-primary" onclick="addRow()" style="margin-top: 12px; width: 100%">+ Add Product</button>
+        <div style="text-align: right; margin-top: 12px; font-weight: 600;">Sales: ৳ <span id="sales">0</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Cash Denominations</h3>
+        <table id="cashTable">
+            <thead>
+            <tr><th>Note</th><th>Qty</th><th>Total</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div style="text-align: right; margin-top: 12px; font-weight: 600;">Cash: ৳ <span id="cash">0</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Extra Expenses</h3>
+        <table id="expenseTable">
+            <thead>
+            <tr><th>Expense Name</th><th>Amount</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn btn-primary" onclick="addExpense()" style="margin-top: 12px; width: 100%">+ Add Expense</button>
+        <div style="text-align: right; margin-top: 12px; font-weight: 600;">Total: ৳ <span id="totalExpense">0</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Summary</h3>
+        <div class="summary-box">
+            <div class="summary-row">
+                <span>Sales Total:</span>
+                <span>৳ <span id="summaryS">0</span></span>
+            </div>
+            <div class="summary-row">
+                <span>Cash Total:</span>
+                <span>৳ <span id="summaryC">0</span></span>
+            </div>
+            <div class="summary-row">
+                <span>Total Expenses:</span>
+                <span>৳ <span id="summaryE">0</span></span>
+            </div>
+            <div class="summary-row">
+                <span>Net Total:</span>
+                <span>৳ <span id="net">0</span></span>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveCalculation()" style="margin-top: 16px; width: 100%; padding: 14px;">Save Calculation</button>
+    </div>
+</div>
+
+<!-- Products Page -->
+<div id="products" class="page">
+    <div class="card">
+        <h3>Product List</h3>
+        <table id="prodTable">
+            <thead>
+            <tr><th>Name</th><th>Pcs/Ctn</th><th>Price</th><th>Edit</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <button class="fab" onclick="openModal()">+</button>
+</div>
+
+<!-- History Page -->
+<div id="history" class="page">
+    <div class="card">
+        <h3>History - Daily Report</h3>
+        <div class="filters">
+            <div>
+                <label>Year:</label>
+                <select id="filterYear" onchange="renderHistory()">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div>
+                <label>Month:</label>
+                <select id="filterMonth" onchange="renderHistory()">
+                    <option value="">All</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div>
+                <label>Date:</label>
+                <input type="date" id="filterDate" onchange="renderHistory()">
+            </div>
+        </div>
+        <button class="btn btn-secondary btn-small" onclick="clearFilters()">Reset Filters</button>
+        <div style="overflow-x: auto; margin-top: 16px;">
+            <table id="historyTable">
+                <thead>
+                <tr><th>Date</th><th>Customer</th><th>Sales</th><th>View</th><th>Edit</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Monthly Report Page -->
+<div id="monthly" class="page">
+    <div class="card">
+        <h3>Monthly Delivery Report</h3>
+        <div id="monthlyContent" style="margin-top: 16px;"></div>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('inventory')">
+        <div class="nav-icon">📊</div>
+        <div>Calculate</div>
+    </div>
+    <div class="nav-item" onclick="showPage('products')">
+        <div class="nav-icon">📦</div>
+        <div>Products</div>
+    </div>
+    <div class="nav-item" onclick="showPage('history')">
+        <div class="nav-icon">📋</div>
+        <div>History</div>
+    </div>
+    <div class="nav-item" onclick="showPage('monthly')">
+        <div class="nav-icon">📅</div>
+        <div>Monthly</div>
+    </div>
+</div>
+
+<!-- Product Modal -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Add Product</h3>
+        <div class="form-group">
+            <label>Product Name</label>
+            <input id="pname" placeholder="Enter product name">
+        </div>
+        <div class="form-group">
+            <label>Pieces per Carton</label>
+            <input id="ppc" type="number" placeholder="0">
+        </div>
+        <div class="form-group">
+            <label>Price per Piece</label>
+            <input id="pprice" type="number" placeholder="0">
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveProduct()">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="modal" id="expenseModal">
+    <div class="modal-content">
+        <h3>Add Expense</h3>
+        <div class="form-group">
+            <label>Expense Name</label>
+            <input id="expenseName" placeholder="Enter expense name">
+        </div>
+        <div class="form-group">
+            <label>Amount</label>
+            <input id="expenseAmount" type="number" placeholder="0">
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeExpenseModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveExpenseFromModal()">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Modal -->
+<div class="modal" id="viewModal">
+    <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+        <div id="viewContent"></div>
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="printDocument()">🖨️ Print</button>
+            <button class="btn btn-secondary" onclick="closeViewModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Prompt Modal -->
+<div class="custom-prompt-overlay" id="customPrompt">
+    <div class="custom-prompt-box">
+        <h3 id="promptTitle">Customer Name</h3>
+        <input type="text" class="custom-prompt-input" id="promptInput" placeholder="Enter customer name">
+        <div class="custom-prompt-actions">
+            <button class="btn btn-secondary" onclick="closeCustomPrompt()">Cancel</button>
+            <button class="btn btn-primary" onclick="submitCustomPrompt()">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" id="confirmDeleteModal">
+    <div class="modal-content confirm-modal">
+        <div class="confirm-icon">!</div>
+        <h3>Delete this item?</h3>
+        <p>This action can’t be undone. Please confirm you want to delete.</p>
+        <div class="confirm-actions">
+            <button class="btn btn-cancel" onclick="closeConfirmDelete()">Cancel</button>
+            <button class="btn btn-delete" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Warning Popup (use instead of confirm()) -->
+<div class="confirm-overlay" id="warningPopup">
+    <div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmText">
+        <div class="confirm-icon">!</div>
+        <div class="confirm-title" id="confirmTitle">Delete this item?</div>
+        <div class="confirm-text" id="confirmText">This action can’t be undone. Please confirm to continue.</div>
+        <div class="confirm-actions">
+            <button class="confirm-btn cancel" onclick="closeWarningPopup()">Cancel</button>
+            <button class="confirm-btn delete" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Popup (Modern Design) -->
+<div class="delete-confirm-overlay" id="deleteConfirmPopup">
+    <div class="delete-confirm-box" role="dialog" aria-modal="true" aria-labelledby="deleteTitle" aria-describedby="deleteText">
+        <div class="delete-confirm-icon">⚠️</div>
+        <div class="delete-confirm-title" id="deleteTitle">Delete this item?</div>
+        <div class="delete-confirm-text" id="deleteText">This action cannot be undone. Are you sure you want to delete this item?</div>
+        <div class="delete-confirm-actions">
+            <button class="delete-confirm-btn cancel" onclick="closeDeleteConfirm()">Cancel</button>
+            <button class="delete-confirm-btn delete" onclick="confirmDeleteAction()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Swipe fix applied in script.js and style.css -->
+<script src="script.js"></script>
+
+<script>
+// Modern warning popup functions (replace old confirm() calls)
+let pendingDeleteCallback = null;
+
+function showWarningPopup(callback) {
+    pendingDeleteCallback = callback;
+    document.getElementById('warningPopup').classList.add('show');
+}
+
+function closeWarningPopup() {
+    document.getElementById('warningPopup').classList.remove('show');
+    pendingDeleteCallback = null;
+}
+
+function confirmDelete() {
+    if (pendingDeleteCallback) {
+        pendingDeleteCallback();
+    }
+    closeWarningPopup();
+}
+
+// Example: Replace confirm() in your delete functions with showWarningPopup()
+// OLD: if (confirm('Delete this item?')) { deleteRow(index); }
+// NEW: showWarningPopup(() => deleteRow(index));
+</script>
+
+</body>
+</html>

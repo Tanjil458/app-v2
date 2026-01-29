@@ -1,0 +1,361 @@
+/* ==================== DELIVERY MODULE STYLES ==================== */
+
+/* Delivery Tables */
+.delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.delivery-table thead th {
+    background: #f8f9fa;
+    padding: 8px 4px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.delivery-table tbody td {
+    padding: 8px 4px;
+    border-bottom: 1px solid #f1f3f5;
+    text-align: center;
+}
+
+.delivery-table input,
+.delivery-table select {
+    width: 100%;
+    padding: 6px 4px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 11px;
+    outline: none;
+    transition: border 0.2s;
+    text-align: center;
+}
+
+.delivery-table input:focus,
+.delivery-table select:focus {
+    border-color: #5B5FED;
+}
+
+.delivery-table .readonly {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Colored columns */
+.delivery-table .col-green {
+    background: #d4edda !important;
+}
+
+.delivery-table .col-red {
+    background: #f8d7da !important;
+}
+
+/* Summary Inline */
+.summary-inline {
+    text-align: right;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.summary-inline .summary-label {
+    color: #495057;
+    margin-right: 8px;
+}
+
+.summary-inline .summary-value {
+    color: #2c3e50;
+}
+
+/* Summary Box */
+.summary-box {
+    background: linear-gradient(135deg, #5B5FED 0%, #7B7FF4 100%);
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 16px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row-total {
+    font-size: 18px;
+    font-weight: 700;
+    padding-top: 12px;
+}
+
+/* Table Responsive Wrapper */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Swipe Animation */
+.delivery-table tbody tr {
+    touch-action: pan-y;
+    transition: transform 0.3s ease;
+}
+
+/* Custom Prompt Modal */
+.custom-prompt-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: fadeIn 0.2s;
+}
+
+.custom-prompt-overlay.show {
+    display: flex;
+}
+
+.custom-prompt-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s;
+    position: relative;
+    z-index: 100000;
+}
+
+.custom-prompt-box h3 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: #2c3e50;
+}
+
+.custom-prompt-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.custom-prompt-input:focus {
+    border-color: #5B5FED;
+}
+
+.custom-prompt-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.custom-prompt-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Delete Confirmation Popup */
+.delete-confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: fadeInOverlay 0.25s ease;
+}
+
+.delete-confirm-overlay.show {
+    display: flex;
+}
+
+.delete-confirm-box {
+    width: 90%;
+    max-width: 340px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+.delete-confirm-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.15) 100%);
+    color: #dc3545;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.delete-confirm-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 10px;
+    letter-spacing: -0.2px;
+}
+
+.delete-confirm-text {
+    font-size: 14px;
+    color: #6c757d;
+    line-height: 1.5;
+    margin: 0 0 24px;
+}
+
+.delete-confirm-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.delete-confirm-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-confirm-btn.cancel {
+    background: #f1f3f5;
+    color: #495057;
+    border: 1.5px solid #e9ecef;
+}
+
+.delete-confirm-btn.cancel:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.delete-confirm-btn.delete {
+    background: linear-gradient(135deg, #dc3545 0%, #c92a3b 100%);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.delete-confirm-btn.delete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+}
+
+.delete-confirm-btn.delete:active {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    0% {
+        transform: translateY(10px) scale(0.95);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Print Styles for Delivery Reports */
+@media print {
+    .custom-prompt-overlay,
+    .delete-confirm-overlay,
+    .btn,
+    button {
+        display: none !important;
+    }
+
+    .delivery-table {
+        page-break-inside: auto;
+    }
+
+    .delivery-table tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    .summary-box {
+        background: #f8f9fa;
+        color: #000;
+        border: 2px solid #000;
+    }
+
+    .col-green,
+    .col-red {
+        background: transparent !important;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .delivery-table {
+        font-size: 10px;
+    }
+
+    .delivery-table thead th,
+    .delivery-table tbody td {
+        padding: 6px 2px;
+    }
+
+    .summary-box {
+        padding: 16px;
+    }
+
+    .summary-row {
+        font-size: 13px;
+    }
+
+    .summary-row-total {
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,118 @@
+<!-- Dashboard Page -->
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Welcome to MimiPro Admin</p>
+</div>
+
+<!-- Quick Stats -->
+<div class="grid grid-2">
+    <div class="card">
+        <div class="card-body">
+            <h4>Today's Sales</h4>
+            <p class="stat-value" id="todaySales">৳ 0</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>Total Products</h4>
+            <p class="stat-value" id="totalProducts">0</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>Active Employees</h4>
+            <p class="stat-value" id="activeEmployees">0</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h4>Pending Credits</h4>
+            <p class="stat-value" id="pendingCredits">৳ 0</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+    <div class="card-header">
+        <h3>Quick Actions</h3>
+    </div>
+    <div class="card-body">
+        <div class="grid grid-2">
+            <button class="btn btn-primary btn-block" data-route="/delivery">
+                📦 New Delivery
+            </button>
+            <button class="btn btn-primary btn-block" data-route="/attendance">
+                ✓ Mark Attendance
+            </button>
+            <button class="btn btn-secondary btn-block" data-route="/employees">
+                👥 Manage Employees
+            </button>
+            <button class="btn btn-secondary btn-block" data-route="/reports">
+                📋 View Reports
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="card">
+    <div class="card-header">
+        <h3>Recent Deliveries</h3>
+    </div>
+    <div class="card-body">
+        <div id="recentDeliveries">
+            <p class="text-center" style="color: #6c757d; padding: 2rem;">No recent deliveries</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5B5FED;
+    margin: 0.5rem 0 0;
+}
+</style>
+
+<script>
+// Load dashboard data
+(async function() {
+    try {
+        // Wait for database
+        if (!window.DB) {
+            setTimeout(arguments.callee, 100);
+            return;
+        }
+
+        // Load products count
+        const products = await window.DB.getAll('products');
+        document.getElementById('totalProducts').textContent = products.length;
+
+        // Load active employees
+        const employees = await window.DB.getAll('employees');
+        const activeEmployees = employees.filter(e => e.isActive).length;
+        document.getElementById('activeEmployees').textContent = activeEmployees;
+
+        // Load recent deliveries
+        const history = await window.DB.getAll('history');
+        if (history.length > 0) {
+            const recent = history.slice(-5).reverse();
+            const html = recent.map(h => `
+                <div style="padding: 12px; border-bottom: 1px solid #f1f3f5;">
+                    <strong>${h.name}</strong><br>
+                    <small style="color: #6c757d;">Sales: ৳${h.sales} | Net: ৳${h.net}</small>
+                </div>
+            `).join('');
+            document.getElementById('recentDeliveries').innerHTML = html;
+        }
+
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+    }
+})();
+</script>
