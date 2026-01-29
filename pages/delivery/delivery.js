@@ -571,6 +571,7 @@ const DeliveryModule = (function() {
                 await addToStore('history', record);
                 
                 // Update stock for each product (deduct sold quantity)
+                let stockUpdateSuccess = true;
                 for (const item of calculationData) {
                     if (item.sold > 0) {
                         const product = products.find(p => p.name === item.product);
@@ -579,13 +580,20 @@ const DeliveryModule = (function() {
                             if (window.StockModule) {
                                 await window.StockModule.initializeStockForProduct(product.id, product.name);
                                 // Deduct sold quantity from stock
-                                await window.StockModule.updateStock(product.id, -item.sold, `Delivery to ${customerName}`);
+                                const updated = await window.StockModule.updateStock(product.id, -item.sold, `Delivery to ${customerName}`);
+                                if (!updated) {
+                                    stockUpdateSuccess = false;
+                                }
                             }
                         }
                     }
                 }
                 
-                alert('Calculation saved successfully! Stock updated.');
+                if (stockUpdateSuccess) {
+                    alert('Calculation saved successfully! Stock updated.');
+                } else {
+                    alert('Calculation saved successfully! Note: Some stock updates may have failed.');
+                }
             } else {
                 // Update existing record
                 const history = await getAllFromStore('history');

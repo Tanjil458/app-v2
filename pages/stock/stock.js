@@ -349,14 +349,17 @@ const StockModule = (function() {
         }
 
         // Initialize stock if doesn't exist
-        await initializeStockForProduct(productId, product.name);
+        const stockRecord = await initializeStockForProduct(productId, product.name);
 
         // Update stock
         const reason = notes || 'Manual restock';
         await updateStock(productId, quantity, reason);
 
-        // Mark as pending sync
-        await markPendingSync('stock', productId);
+        // Get the stock record to mark for sync
+        const stockRecords = await getByIndex('stock', 'productId', productId);
+        if (stockRecords.length > 0) {
+            await markPendingSync('stock', stockRecords[0].id);
+        }
 
         closeAddStockModal();
         await renderStockTable();
