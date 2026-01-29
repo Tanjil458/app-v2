@@ -11,6 +11,7 @@
         '/': 'pages/dashboard/dashboard.html',
         '/dashboard': 'pages/dashboard/dashboard.html',
         '/delivery': 'pages/delivery/delivery.html',
+        '/stock': 'pages/stock/stock.html',
         '/employees': 'pages/employees/employees.html',
         '/attendance': 'pages/attendance/attendance.html',
         '/credits': 'pages/credits/cretits.html',

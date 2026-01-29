@@ -569,7 +569,23 @@ const DeliveryModule = (function() {
             if (editingHistoryIndex === -1) {
                 // Add new record
                 await addToStore('history', record);
-                alert('Calculation saved successfully!');
+                
+                // Update stock for each product (deduct sold quantity)
+                for (const item of calculationData) {
+                    if (item.sold > 0) {
+                        const product = products.find(p => p.name === item.product);
+                        if (product) {
+                            // Initialize stock if it doesn't exist
+                            if (window.StockModule) {
+                                await window.StockModule.initializeStockForProduct(product.id, product.name);
+                                // Deduct sold quantity from stock
+                                await window.StockModule.updateStock(product.id, -item.sold, `Delivery to ${customerName}`);
+                            }
+                        }
+                    }
+                }
+                
+                alert('Calculation saved successfully! Stock updated.');
             } else {
                 // Update existing record
                 const history = await getAllFromStore('history');
