@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="summary-stats">
             <div class="summary-item">
-                <div class="summary-icon" style="background: #5B5FED;">💰</div>
+                <div class="summary-icon revenue">💰</div>
                 <div class="summary-content">
                     <h4>Today's Revenue</h4>
                     <p class="stat-value" id="todaySales">৳ 0</p>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="summary-item">
-                <div class="summary-icon" style="background: #10b981;">💵</div>
+                <div class="summary-icon cash">💵</div>
                 <div class="summary-content">
                     <h4>Cash Collected</h4>
                     <p class="stat-value" id="todayCash">৳ 0</p>
@@ -32,7 +32,7 @@
 <div class="grid grid-2">
     <div class="card stat-card">
         <div class="card-body">
-            <div class="stat-icon">📦</div>
+            <div class="stat-icon">🚚</div>
             <h4>Today's Deliveries</h4>
             <p class="stat-value" id="todayDeliveries">0</p>
             <small class="stat-label">Delivery records</small>
@@ -50,7 +50,7 @@
     
     <div class="card stat-card">
         <div class="card-body">
-            <div class="stat-icon">📦</div>
+            <div class="stat-icon">📋</div>
             <h4>Total Products</h4>
             <p class="stat-value" id="totalProducts">0</p>
             <small class="stat-label">In catalog</small>
@@ -71,7 +71,7 @@
 <div class="card">
     <div class="card-header">
         <h3>Quick Actions</h3>
-        <p style="font-size: 0.875rem; color: #6c757d; margin: 4px 0 0;">Frequently used operations</p>
+        <p class="card-subtitle">Frequently used operations</p>
     </div>
     <div class="card-body">
         <div class="grid grid-2">
@@ -95,11 +95,11 @@
 <div class="card">
     <div class="card-header">
         <h3>Recent Deliveries</h3>
-        <p style="font-size: 0.875rem; color: #6c757d; margin: 4px 0 0;">Latest delivery calculations</p>
+        <p class="card-subtitle">Latest delivery calculations</p>
     </div>
     <div class="card-body">
         <div id="recentDeliveries">
-            <p class="text-center" style="color: #6c757d; padding: 2rem;">No recent deliveries</p>
+            <p class="text-center empty-state">No recent deliveries</p>
         </div>
     </div>
 </div>
@@ -117,6 +117,17 @@
     font-size: 0.75rem;
     display: block;
     margin-top: 4px;
+}
+
+.card-subtitle {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin: 4px 0 0;
+}
+
+.empty-state {
+    color: #6c757d;
+    padding: 2rem;
 }
 
 .stat-card .card-body {
@@ -165,6 +176,15 @@
     font-size: 24px;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.summary-icon.revenue {
+    background: #5B5FED;
+}
+
+.summary-icon.cash {
+    background: #10b981;
 }
 
 .summary-content h4 {
@@ -185,6 +205,31 @@
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.75rem;
     margin-top: 2px;
+}
+
+/* Recent Deliveries List */
+.delivery-item {
+    padding: 12px;
+    border-bottom: 1px solid #f1f3f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delivery-info strong {
+    color: #2c3e50;
+}
+
+.delivery-info small {
+    color: #6c757d;
+}
+
+.delivery-amount strong {
+    color: #10b981;
+}
+
+.delivery-amount small {
+    color: #6c757d;
 }
 
 @media (max-width: 768px) {
@@ -256,7 +301,10 @@
         // Load recent deliveries
         if (history.length > 0) {
             const recent = history.slice(-5).reverse();
-            const html = recent.map(h => {
+            const container = document.getElementById('recentDeliveries');
+            container.innerHTML = '';
+            
+            recent.forEach(h => {
                 const date = new Date(h.timestamp || h.date);
                 const formattedDate = date.toLocaleDateString('en-US', { 
                     month: 'short', 
@@ -264,20 +312,43 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 });
-                return `
-                <div style="padding: 12px; border-bottom: 1px solid #f1f3f5; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong style="color: #2c3e50;">${h.name || 'Delivery'}</strong><br>
-                        <small style="color: #6c757d;">${formattedDate}</small>
-                    </div>
-                    <div style="text-align: right;">
-                        <strong style="color: #10b981;">৳${(h.sales || 0).toLocaleString()}</strong><br>
-                        <small style="color: #6c757d;">Net: ৳${(h.net || 0).toLocaleString()}</small>
-                    </div>
-                </div>
-            `;
-            }).join('');
-            document.getElementById('recentDeliveries').innerHTML = html;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'delivery-item';
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'delivery-info';
+                
+                const nameStrong = document.createElement('strong');
+                nameStrong.textContent = h.name || 'Delivery';
+                
+                const dateBr = document.createElement('br');
+                const dateSmall = document.createElement('small');
+                dateSmall.textContent = formattedDate;
+                
+                infoDiv.appendChild(nameStrong);
+                infoDiv.appendChild(dateBr);
+                infoDiv.appendChild(dateSmall);
+                
+                const amountDiv = document.createElement('div');
+                amountDiv.className = 'delivery-amount';
+                amountDiv.style.textAlign = 'right';
+                
+                const salesStrong = document.createElement('strong');
+                salesStrong.textContent = '৳' + (h.sales || 0).toLocaleString();
+                
+                const netBr = document.createElement('br');
+                const netSmall = document.createElement('small');
+                netSmall.textContent = 'Net: ৳' + (h.net || 0).toLocaleString();
+                
+                amountDiv.appendChild(salesStrong);
+                amountDiv.appendChild(netBr);
+                amountDiv.appendChild(netSmall);
+                
+                itemDiv.appendChild(infoDiv);
+                itemDiv.appendChild(amountDiv);
+                container.appendChild(itemDiv);
+            });
         }
 
     } catch (error) {
