@@ -43,6 +43,30 @@
     font-weight: 400;
 }
 
+.user-info {
+    font-size: 12px;
+    color: #ccc;
+    margin-right: 8px;
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid #5B5FED;
+    color: #5B5FED;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: #5B5FED;
+    color: white;
+}
+
+
 /* Main Content */
 .main-content {
     padding: 20px 16px 90px;

@@ -19,7 +19,8 @@
             <span class="logo-mimi">Mimi</span><span class="logo-pro">Pro</span>
         </div>
         <div class="header-actions">
-            <span class="local-badge">LOCAL MODE</span>
+            <span id="userInfo" class="user-info"></span>
+            <button id="logoutBtn" class="btn-logout" style="display: none;">Logout</button>
         </div>
     </header>
 
@@ -51,8 +52,35 @@
 
     <!-- Core JavaScript Files (order matters) -->
     <script src="db/indexeddb.js"></script>
+    <script src="auth/session.js"></script>
+    <script src="auth/admin-auth.js"></script>
     <script src="assets/js/constants.js"></script>
     <script src="assets/js/router.js"></script>
     <script src="assets/js/app.js"></script>
+    
+    <script>
+        // Authentication check - redirect to login if not authenticated
+        if (!SessionManager.isSessionValid()) {
+            window.location.href = '/login.html';
+        } else {
+            // Display user info in header
+            const session = SessionManager.getSession();
+            const userInfo = document.getElementById('userInfo');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (session) {
+                const role = session.isOwner ? 'Admin' : 'Employee';
+                userInfo.textContent = `${session.employeeName} (${role})`;
+                logoutBtn.style.display = 'inline-block';
+                
+                // Handle logout
+                logoutBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to logout?')) {
+                        AuthManager.logout();
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
